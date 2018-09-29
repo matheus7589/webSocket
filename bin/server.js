@@ -27,26 +27,32 @@ var clients = {};
 io.sockets.on('connection', function (socket) {
 
 	socket.on('join', function (data) {
+		var sql = '';
         clients[socket.id] = {
             nome: data.nome,
             cod_matriz: data.cod_matriz,
             cod_empresa: data.cod_empresa
         };
         //console.log(clients);
-		console.log('Join');
+		// console.log('Join');
 		console.log('Listando dados');
 		connection.getConnection(function(error, tempCont){
 			if(!!error){
-				tempCont.release();
 				console.log('Erro na query');
 			}else{
 				console.log('Sucesso');
-				tempCont.query('SELECT * from tbl_pets', function(error, rows, fields){
+				if(data.cod_matriz == null){
+                    sql = 'SELECT * from empresa WHERE codMatriz = ' + data.cod_empresa;
+                }
+
+				tempCont.query(sql, function(error, rows, fields){
 					if(!!error){
 						console.log('erro na query');
 					}else{
 						console.log(rows);
+						return;
 					}
+                    tempCont.release();
 				});
 			}
 		});

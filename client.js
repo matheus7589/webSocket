@@ -6,7 +6,7 @@ socket.on('connect', function () {
     var empresa = {};
     empresa.nome = 'Matheus';
     empresa.cod_matriz = null;
-    empresa.cod_empresa = 4564;
+    empresa.cod_empresa = 32;
     socket.emit("join", empresa);
 });
   
